@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,13 @@ namespace YARG.Gameplay.HUD
             // Convert to dictionary with "Menu" as key
             var children = GetComponentsInChildren<PauseMenuObject>(true);
             _menus = children.ToDictionary(i => i.Menu, i => i);
+        }
+
+        private void OnEnable()
+        {
+            transform.DOKill();
+            transform.localScale = new Vector3(1f, 0f, 1f);
+            transform.DOScaleY(1f, 0.25f).SetEase(Ease.OutSine).SetUpdate(true);
         }
 
         private void Start()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using YARG.Helpers.Extensions;
+using DG.Tweening;
 
 namespace YARG.Menu.ListMenu
 {
@@ -23,7 +24,8 @@ namespace YARG.Menu.ListMenu
 
             // Offset the inner container
             var difference = outerRect - selectedRect;
-            _innerViewContainer.anchoredPosition = currentAnchorPos.WithY(difference);
+            _innerViewContainer.DOKill();
+            _innerViewContainer.DOAnchorPos(currentAnchorPos.WithY(difference), 0.5f).SetEase(Ease.OutExpo);
         }
     }
 }

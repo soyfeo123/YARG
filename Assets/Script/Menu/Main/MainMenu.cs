@@ -18,6 +18,8 @@ namespace YARG.Menu.Main
         [SerializeField]
         private TextMeshProUGUI _versionText;
 
+        
+
         private void Start()
         {
             _versionText.text = GlobalVariables.Instance.CurrentVersion;

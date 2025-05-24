@@ -1,6 +1,9 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YARG.Core.Audio;
+using YARG.Deluxe;
 using YARG.Menu.ListMenu;
 using YARG.Settings;
 
@@ -41,9 +44,59 @@ namespace YARG.Menu.MusicLibrary
         [SerializeField]
         private TextMeshProUGUI _categoryText;
 
-        public override void Show(bool selected, ViewType viewType)
+        [Space]
+        [SerializeField] private GameObject _mainContainer;
+
+        [Space]
+        public GameObject _offsetContainer;
+
+        Vector2 defSize;
+        Vector2 oldSongNameDefPos;
+        Vector2 oldCategoryDefPos;
+
+        public static bool IsInCooldown = false;
+
+        private void Start()
         {
-            base.Show(selected, viewType);
+            defSize = GetComponent<RectTransform>().sizeDelta;
+        }
+
+        public override void Show(bool selected, ViewType viewType, int relativeIndex)
+        {
+            if (selected)
+            {
+                GameObject oldContainer = Instantiate(_mainContainer, _offsetContainer.transform);
+                RectTransform oldContainerRT = oldContainer.GetComponent<RectTransform>();
+                oldContainerRT.DOKill();
+                IsInCooldown = true;
+                oldContainerRT.DOAnchorPosY(MusicLibraryMenu.Up ? (oldContainerRT.anchoredPosition.y - 110) : (oldContainerRT.anchoredPosition.y + 110), MusicLibraryMenu.IsHolding ? 0.125f : 0.25f).SetEase(Ease.Linear).OnComplete(() => {Destroy(oldContainer); IsInCooldown = false; });
+
+                GameObject oldIcon = Instantiate(_icon.gameObject, _offsetContainer.transform);
+                RectTransform oldIconRT = oldIcon.GetComponent<RectTransform>();
+                oldIconRT.DOKill();
+                oldIconRT.DOAnchorPosY(MusicLibraryMenu.Up ? (oldContainerRT.anchoredPosition.y - 110) : (oldContainerRT.anchoredPosition.y + 110), MusicLibraryMenu.IsHolding ? 0.125f : 0.25f).SetEase(Ease.Linear).OnComplete(() => { Destroy(oldContainer); IsInCooldown = false; });
+            }
+            base.Show(selected, viewType, relativeIndex);
+
+            if (!selected)
+            {
+                
+                RectTransform rectT = _offsetContainer.GetComponent<RectTransform>();
+                Debug.Log(rectT);
+                rectT.DOKill();
+
+                /*if(relativeIndex == 1 && !MusicLibraryMenu.Up)
+                {
+                    rectT.anchoredPosition = new Vector2(0, 0);
+                    rectT.DOAnchorPosY(60, 0.25f).SetEase(Ease.Linear);
+                }
+                else
+                {*/
+                rectT.anchoredPosition = new Vector2(0, (MusicLibraryMenu.Up ? 60 : -60)) ;
+                    rectT.DOAnchorPosY(0, MusicLibraryMenu.IsHolding ? 0.125f:0.25f).SetEase(Ease.Linear);
+                //}
+                
+            }
 
             // use category header primary text (which supports wider text), when used as section header
             if(viewType.UseWiderPrimaryText)
@@ -85,6 +138,34 @@ namespace YARG.Menu.MusicLibrary
             {
                 _favoriteButtonContainer.SetActive(false);
                 _favoriteButtonContainerSelected.SetActive(false);
+            }
+
+            RectTransform rt = GetComponent<RectTransform>();
+
+            if (selected)
+            {
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rt.sizeDelta.x, 160);
+
+                
+
+                RectTransform containerRT = _mainContainer.GetComponent<RectTransform>();
+
+                containerRT.DOKill();
+                containerRT.anchoredPosition = new Vector2(45, MusicLibraryMenu.Up ? (1.5f + 100) : (1.5f - 100));
+                containerRT.DOAnchorPosY(1.5f, MusicLibraryMenu.IsHolding ? 0.125f : 0.25f).SetEase(Ease.Linear);
+
+
+                RectTransform iconrT = _icon.GetComponent<RectTransform>();
+
+                iconrT.DOKill();
+                iconrT.anchoredPosition = new Vector2(55, MusicLibraryMenu.Up ? (1.5f + 100) : (1.5f - 100));
+                iconrT.DOAnchorPosY(1.5f, MusicLibraryMenu.IsHolding ? 0.125f : 0.25f).SetEase(Ease.Linear);
+
+                CustomSFX.PlaySoundEffect("uiselect.wav");
+            }
+            else
+            {
+                GetComponent<RectTransform>().sizeDelta = new Vector2(rt.sizeDelta.x, 60);
             }
         }
 

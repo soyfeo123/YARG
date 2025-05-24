@@ -7,13 +7,13 @@ namespace YARG.Gameplay.Visuals
 {
     public class BeatlineElement : TrackElement<TrackPlayer>
     {
-        private const float WEAK_BEAT_SCALE   = 0.04f;
-        private const float STRONG_BEAT_SCALE = 0.06f;
-        private const float MEASURE_SCALE     = 0.08f;
+        private const float WEAK_BEAT_SCALE   = 1.5f;
+        private const float STRONG_BEAT_SCALE = 1.6f;
+        private const float MEASURE_SCALE     = 1.72f;
 
         private const float WEAK_BEAT_ALPHA   = 0.3f;
-        private const float STRONG_BEAT_ALPHA = 0.4f;
-        private const float MEASURE_ALPHA     = 0.8f;
+        private const float STRONG_BEAT_ALPHA = 0.3f;
+        private const float MEASURE_ALPHA     = 0.3f;
 
         [SerializeField]
         private MeshRenderer _meshRenderer;
@@ -48,7 +48,7 @@ namespace YARG.Gameplay.Visuals
             }
 
             var cachedTransform = _meshRenderer.transform;
-            cachedTransform.localScale = cachedTransform.localScale.WithY(yScale);
+            cachedTransform.localScale = cachedTransform.localScale.WithX(yScale);
 
             var material = _meshRenderer.material;
             var color = material.color;

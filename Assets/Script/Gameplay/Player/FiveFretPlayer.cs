@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using YARG.Audio;
 using YARG.Core;
 using YARG.Core.Audio;
@@ -12,6 +13,7 @@ using YARG.Core.Logging;
 using YARG.Core.Replays;
 using YARG.Gameplay.HUD;
 using YARG.Gameplay.Visuals;
+using YARG.Helpers.Authoring;
 using YARG.Player;
 using YARG.Settings;
 
@@ -38,6 +40,10 @@ namespace YARG.Gameplay.Player
         [Header("Five Fret Specific")]
         [SerializeField]
         private FretArray _fretArray;
+
+        public CameraPositioner cameraPositioner;
+
+        public EffectGroup starPowerThing;
 
         public override float[] StarMultiplierThresholds { get; protected set; } =
             GuitarStarMultiplierThresholds;
@@ -109,6 +115,14 @@ namespace YARG.Gameplay.Player
             engine.OnCountdownChange += OnCountdownChange;
 
             return engine;
+        }
+
+        private void Update()
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                DoTheCoolStarPowerThing();
+            }
         }
 
         protected override void FinishInitialization()
@@ -336,6 +350,27 @@ namespace YARG.Gameplay.Player
         {
             var frame = new ReplayFrame(Player.Profile, EngineParams, Engine.EngineStats, ReplayInputs.ToArray());
             return (frame, Engine.EngineStats.ConstructReplayStats(Player.Profile.Name));
+        }
+
+        protected override void OnStarPowerStatus(bool active)
+        {
+            base.OnStarPowerStatus(active);
+
+            if (active)
+            {
+                DoTheCoolStarPowerThing();
+            }
+        }
+
+        private void DoTheCoolStarPowerThing()
+        {
+            Debug.Log("WOAH WOAH WOAH!!! STAR POWER IS ON MOTHER HECKER!!!");
+            GlobalAudioHandler.PlaySoundEffect(SfxSample.StarPowerAward);
+            GlobalAudioHandler.PlaySoundEffect(SfxSample.StarPowerDeploy);
+
+            cameraPositioner.Bounce(5, 1f);
+
+            starPowerThing.Play();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace YARG.Venue
         }
 
 #nullable enable
-        private static BackgroundResult? GetVenuePathFromGlobal()
+        public static BackgroundResult? GetVenuePathFromGlobal()
 #nullable disable
         {
             string[] validExtensions =

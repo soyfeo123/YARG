@@ -91,6 +91,10 @@ namespace YARG.Menu.MusicLibrary
 
         private int _primaryHeaderIndex;
 
+        public static bool IsHolding = false;
+
+        public static bool Up = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -107,6 +111,8 @@ namespace YARG.Menu.MusicLibrary
                 new NavigationScheme.Entry(MenuAction.Up, "Menu.Common.Up",
                     ctx =>
                     {
+                        Up = true;
+                        IsHolding = ctx.IsRepeat;
                         if (IsButtonHeldByPlayer(ctx.Player, MenuAction.Orange))
                         {
                             GoToPreviousSection();
@@ -115,11 +121,15 @@ namespace YARG.Menu.MusicLibrary
                         {
                             SetWrapAroundState(!ctx.IsRepeat);
                             SelectedIndex--;
+
+                            
                         }
                     }),
                 new NavigationScheme.Entry(MenuAction.Down, "Menu.Common.Down",
                     ctx =>
                     {
+                        Up = false;
+                        IsHolding = ctx.IsRepeat;
                         if (IsButtonHeldByPlayer(ctx.Player, MenuAction.Orange))
                         {
                             GoToNextSection();
@@ -127,7 +137,10 @@ namespace YARG.Menu.MusicLibrary
                         else
                         {
                             SetWrapAroundState(!ctx.IsRepeat);
+
                             SelectedIndex++;
+
+                            
                         }
                     }),
                 new NavigationScheme.Entry(MenuAction.Green, "Menu.Common.Confirm",

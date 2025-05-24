@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using YARG.Menu.MusicLibrary;
 using YARG.Settings;
 
 namespace YARG.Menu.ListMenu
@@ -39,6 +40,10 @@ namespace YARG.Menu.ListMenu
             get => _selectedIndex;
             set
             {
+                if (SongView.IsInCooldown)
+                {
+                    return;
+                }
                 if (_viewList.Count == 0)
                 {
                     _selectedIndex = 0;
@@ -175,7 +180,7 @@ namespace YARG.Menu.ListMenu
                 }
 
                 // Otherwise, show
-                _viewObjects[i].Show(relativeIndex == 0, _viewList[realIndex]);
+                _viewObjects[i].Show(relativeIndex == 0, _viewList[realIndex], relativeIndex);
             }
         }
 

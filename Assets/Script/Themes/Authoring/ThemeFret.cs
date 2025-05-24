@@ -42,6 +42,7 @@ namespace YARG.Themes
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(transform.position, new Vector3(FRET_SIZE, 0f, FRET_SIZE));
+            
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NoteGroups: []
-  StarpowerNoteGroups: []
+  StarPowerNoteGroups: []
   _normalSustainLine: {fileID: 6564187009765405389}
   _openSustainLine: {fileID: 6817911577054343240}
 --- !u!1 &5594689482099579600

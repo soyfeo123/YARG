@@ -131,7 +131,7 @@ namespace YARG.Gameplay.Visuals
             if (_player is FiveFretPlayer player)
             {
                 // Make sure to lerp it to prevent jumps
-                _whammyFactor = Mathf.Lerp(_whammyFactor, player.WhammyFactor, Time.deltaTime * 6f);
+                _whammyFactor = Mathf.Lerp(_whammyFactor, player.WhammyFactor * 2.5f, Time.deltaTime * 9f);
             }
 
             float whammy = _whammyFactor * 1.5f;
@@ -141,7 +141,7 @@ namespace YARG.Gameplay.Visuals
             _tertiaryAmplitudeTime += Time.deltaTime * (1.7f + whammy);
 
             // Change line amplitude
-            _material.SetFloat(_primaryAmplitude, 0.18f + whammy * 0.2f);
+            _material.SetFloat(_primaryAmplitude, 0.75f + whammy * 0.2f);
             _material.SetFloat(_secondaryAmplitude, Mathf.Sin(_secondaryAmplitudeTime) * (whammy + 0.5f));
             _material.SetFloat(_tertiaryAmplitude, Mathf.Sin(_tertiaryAmplitudeTime) * (whammy * 0.1f + 0.1f));
 

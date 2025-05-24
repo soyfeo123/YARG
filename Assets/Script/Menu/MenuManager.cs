@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
+using YARG.Menu.Main;
 
 namespace YARG.Menu
 {
@@ -37,6 +39,7 @@ namespace YARG.Menu
         private Dictionary<Menu, MenuObject> _menus;
 
         private readonly Stack<Menu> _openMenus = new();
+        public MainMenuBackground background;
 
         protected override void SingletonAwake()
         {
@@ -90,6 +93,27 @@ namespace YARG.Menu
             if (hideOther && _openMenus.TryPeek(out var currentMenuEnum) &&
                 _menus.TryGetValue(currentMenuEnum, out var currentMenu))
             {
+                /*if(currentMenuEnum == Menu.MainMenu)
+                {
+                    currentMenu.transform.Find("Menu Options").GetComponent<RectTransform>().DOAnchorPosX(-814.62f, 0.5f).SetEase(Ease.InSine).OnComplete(delegate
+                    {
+                        currentMenu.transform.Find("Menu Options").GetComponent<RectTransform>().anchoredPosition = new Vector2(128, -401);
+                        currentMenu.gameObject.SetActive(false);
+
+                        // Show the new one
+                        if (setActiveImmediate)
+                        {
+                            newMenu.gameObject.SetActive(true);
+                        }
+
+                        // ... and push it onto the stack
+                        _openMenus.Push(menu);
+                
+                        
+                    });
+                    return newMenu;
+                }
+                else*/
                 currentMenu.gameObject.SetActive(false);
             }
 
@@ -102,6 +126,7 @@ namespace YARG.Menu
             // ... and push it onto the stack
             _openMenus.Push(menu);
 
+            //background.DEMANDNewVenue();
             return newMenu;
         }
 

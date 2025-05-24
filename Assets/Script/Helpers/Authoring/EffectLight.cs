@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 namespace YARG.Helpers.Authoring
 {
@@ -53,18 +54,22 @@ namespace YARG.Helpers.Authoring
         private void Update()
         {
             // FadeOut mode
-            if (_mode == Mode.FadeOut && _light.intensity > 0f)
+            /*if (_mode == Mode.FadeOut && _light.intensity > 0f)
             {
-                _light.intensity -= Time.deltaTime * _fadeOutRate;
-            }
+                Debug.Log($"Intensity: {_initialIntensity}, Rate: {_fadeOutRate}, Duration: {_initialIntensity / _fadeOutRate}");
+
+                _light.DOKill();
+                _light.DOIntensity(0f, _initialIntensity / _fadeOutRate).SetEase(Ease.OutBounce).SetUpdate(true);
+            }*/
 
             // Wavy mode
             if (_mode == Mode.Wavy && _playing)
             {
                 // TODO: Maybe allow customizing this?
                 _light.intensity = _initialIntensity +
-                    Mathf.Sin(Time.time * 30f) * 0.075f +
-                    Mathf.Sin(Time.time * 40f) * 0.075f;
+                   Mathf.Sin(Time.time * 30f) * 0.2f -   // boost this one
+                   Mathf.Sin(Time.time * 40f) * 0.15f +  // and this one
+                   Mathf.Sin(Time.time * 90f) * 0.05f;   // add another layer
             }
         }
 
@@ -77,8 +82,16 @@ namespace YARG.Helpers.Authoring
 
         public void Play()
         {
-            _light.intensity = _initialIntensity;
+            _light.intensity = _mode == Mode.FadeOut ? _initialIntensity * 1.5f : _initialIntensity;
             _playing = true;
+
+            if (_mode == Mode.FadeOut && _light.intensity > 0f)
+            {
+                Debug.Log($"Intensity: {_initialIntensity}, Rate: {_fadeOutRate}, Duration: {_initialIntensity / _fadeOutRate}");
+
+                _light.DOKill();
+                _light.DOIntensity(0f, _initialIntensity / _fadeOutRate * 1.125f).SetEase(Ease.OutBounce, 3f, 0.3f);
+            }
         }
 
         public void Stop()

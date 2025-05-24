@@ -33,9 +33,9 @@ namespace YARG.Menu.History
             ViewType.ViewClick();
         }
 
-        public override void Show(bool selected, ViewType viewType)
+        public override void Show(bool selected, ViewType viewType, int relativeIndex)
         {
-            base.Show(selected, viewType);
+            base.Show(selected, viewType, relativeIndex);
 
             // Show the correct container
             _fullContainer.SetActive(viewType.UseFullContainer);

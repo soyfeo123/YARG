@@ -112,6 +112,7 @@ namespace YARG.Gameplay
             if (_starPowerActivations < 1 || beat.Type == BeatlineType.Weak)
                 return;
 
+            
             GlobalAudioHandler.PlaySoundEffect(SfxSample.Clap);
         }
 

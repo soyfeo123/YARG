@@ -10,7 +10,9 @@ namespace YARG.Gameplay.Visuals
         private const float BOUNCE_UNITS = 0.03f;
         private const float SPEED = 0.25f;
 
-        private float _currentBounce;
+        float speedOverride = 0.25f;
+
+        public float _currentBounce;
 
         private void Start()
         {
@@ -46,7 +48,7 @@ namespace YARG.Gameplay.Visuals
         {
             if (_currentBounce <= 0f) return;
 
-            float speed = Time.deltaTime * SPEED;
+            float speed = Time.deltaTime * speedOverride;
 
             _currentBounce -= speed;
             transform.Translate(Vector3.up * speed, Space.World);
@@ -59,7 +61,20 @@ namespace YARG.Gameplay.Visuals
 
             // Remember that we should be moving in the opposite direction
             // because we're moving the camera, not the track.
-            _currentBounce = BOUNCE_UNITS * SettingsManager.Settings.KickBounceMultiplier.Value;
+            _currentBounce = BOUNCE_UNITS * SettingsManager.Settings.KickBounceMultiplier.Value * 2;
+            transform.Translate(Vector3.down * _currentBounce, Space.World);
+        }
+
+        public void Bounce(float multiplier, float speed)
+        {
+            speedOverride = speed;
+
+            // Prevent bounce from stacking up
+            transform.Translate(Vector3.up * _currentBounce, Space.World);
+
+            // Remember that we should be moving in the opposite direction
+            // because we're moving the camera, not the track.
+            _currentBounce = BOUNCE_UNITS * SettingsManager.Settings.KickBounceMultiplier.Value * 2 * multiplier;
             transform.Translate(Vector3.down * _currentBounce, Space.World);
         }
     }

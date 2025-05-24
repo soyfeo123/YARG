@@ -1,4 +1,5 @@
 using UnityEngine;
+using YARG.Menu.Main;
 
 namespace YARG.Venue
 {
@@ -47,7 +48,18 @@ namespace YARG.Venue
 
         private void Update()
         {
-            var lightState = _lightManager.GetLightStateFor(Location);
+            LightManager.LightState lightState;
+
+            if (FindObjectOfType<MainMenuBackground>())
+            {
+                lightState = new();
+                lightState.Intensity = 1f;
+                lightState.Color = null;
+            }
+            else
+            {
+                lightState = _lightManager.GetLightStateFor(Location);
+            }
 
             _light.intensity = _defaultIntensity * lightState.Intensity;
 

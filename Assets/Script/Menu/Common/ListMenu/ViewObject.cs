@@ -22,7 +22,7 @@ namespace YARG.Menu.ListMenu
 
         [Space]
         [SerializeField]
-        private Image _icon;
+        public Image _icon;
         [SerializeField]
         private List<TextMeshProUGUI> _primaryText;
         [SerializeField]
@@ -32,7 +32,7 @@ namespace YARG.Menu.ListMenu
 
         protected TViewType ViewType;
 
-        public virtual void Show(bool selected, TViewType viewType)
+        public virtual void Show(bool selected, TViewType viewType, int relativeIndex)
         {
             Showing = true;
             ViewType = viewType;
